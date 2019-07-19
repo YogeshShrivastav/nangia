@@ -1,0 +1,61 @@
+<div class="loader" *ngIf="loader">
+  <div class="outer">
+    <div class="innear">
+      <div class="logo-loading">
+        <span class="circle-one"></span>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="main-container">
+  <div class="master-heading bcspace">
+    <div class="back-btn">
+      <a mat-button routerLink="/news-lisit" routerLinkActive="active"><i class="material-icons">arrow_right_alt</i></a>
+    </div>
+    <div class="vl-info pl0">
+      <ul>
+        <li><p class="af-none">{{news_data.date_created | date:'d MMM y'}}</li>
+        </ul>
+      </div>
+    </div>
+    <div class="cs-container pt70">
+      <div class="cs-row" >
+        <div class="right-data pr20">
+          <div class="row">
+            <div class="col-12">
+              <div class="contst">
+                <div class="row">
+                  <div class="col-7">
+                    <div class="detail">
+                      <h3>{{news_data.subject}}</h3>
+                      <p><strong>Description :</strong>{{news_data.desc}}</p>
+                    </div>
+                    
+                    <div class="image-listing">
+                      <button *ngFor="let row of news_image;let i=index;" mat-button (click)="openDialog(row.files)"><img src="{{upload_url}}/uploads/{{row.files}}"></button>
+                    </div>
+                  </div>
+                  
+                  <!-- <div class="col-5">
+                    <div class="newsdata">
+                      <div class="hadding">
+                        <h4>Status</h4>
+                      </div>
+                      
+                      <div class="user-details">
+                        <p>{{news_data.status == '0'? 'Active' : 'Deactive'}}</p>
+                        <button  mat-button class="view" (click)="change_status()">change</button>
+                      </div>
+                    </div>
+                  </div> -->
+                  
+                </div>                            
+              </div>
+            </div>     
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="h100"></div>
+    

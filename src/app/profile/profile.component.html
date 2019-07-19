@@ -1,0 +1,161 @@
+<div class="main-container">
+  <div class="master-heading">
+    <div class="vl-info">
+      <ul>
+        <li class="af-none">
+          <!-- <p>Mandatory fields ( <sup class="red-clr"> * </sup> )</p> -->
+        </li>
+      </ul>
+    </div>
+  </div>
+  
+  <div class="cs-spinner full-page" *ngIf="loader">
+    <div class="outer">
+      <div class="innear">
+        <mat-spinner></mat-spinner>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="cs-container ">
+    <div class="cs-row">
+      <div class="right-data">
+        <form name="form" (ngSubmit)="f.form.valid && update()" #f="ngForm" novalidate>
+          <div class="contst">
+            <div class="btn-con">
+              <div class="cs-heading">
+                <h2>User Details</h2>
+              </div>
+              
+              <div class="save-bn">
+                <button [disabled]="form.new_password != form.confirm_password">Save</button>
+              </div>
+            </div>
+            
+            <div class="cs-divider pt10">
+              <mat-divider></mat-divider>
+            </div>
+            <div class="form-field">
+              <div class="row">
+                <div class="col-12">
+                  <div class="row">
+                    <div class="control-field error col-4">
+                      <mat-form-field class="example-full-width cs-input">
+                        <input matInput placeholder="Name" name="name" [(ngModel)] = "form.name" #name="ngModel">
+                      </mat-form-field>
+                      <!-- <mat-error *ngIf="f.submitted && !name.valid" >Name is required</mat-error>  -->
+                    </div>
+                    <div class="control-field col-4">
+                      <mat-form-field class="example-full-width cs-input" >
+                        <input matInput placeholder="Email"  name="email" [(ngModel)] = "form.email">
+                      </mat-form-field>
+                      <!-- <mat-error *ngIf="f.submitted && !email.valid" >Email is required</mat-error>  -->
+                    </div>
+                    <div class="control-field col-4">
+                      <mat-form-field class="example-full-width cs-input" >
+                        <input matInput placeholder="Mobile No." name="mobile" [(ngModel)] = "form.mobile" #mobile="ngModel">
+                      </mat-form-field>
+                      <!-- <mat-error *ngIf="f.submitted && !mobile.valid" >Mobile No. is required</mat-error> -->
+                    </div>
+                    <div class="control-field col-4">
+                      <mat-form-field class="example-full-width cs-input">
+                        <input matInput placeholder="Landline No." name="landline" [(ngModel)] = "form.landline" #landline = "ngModel">
+                      </mat-form-field>
+                    </div>
+                    <div class="control-field col-4">
+                      <mat-form-field class="example-full-width cs-input">
+                        <input matInput placeholder = "Department" name = "department"  [(ngModel)] = "form.department" #department = "ngModel" readonly>
+                        <mat-autocomplete #department="matAutocomplete">
+                          <mat-option>
+                            <small></small>
+                          </mat-option>
+                        </mat-autocomplete>
+                      </mat-form-field>
+                      <!-- <mat-error *ngIf="f.submitted && !department.valid" >department is required</mat-error>  -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            
+            <!-- <div class="cs-heading pt20">
+              <h2>Document Rights</h2>
+            </div> -->
+            
+            <div class="cs-divider pt10 pb10">
+              <mat-divider></mat-divider>
+            </div>
+            
+          </div>
+          
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <div class="pass-container ">
+    <div class="cs-row">
+      <div class="right-data">
+        <form name="form" (ngSubmit)="f.form.valid && update()" #f="ngForm" novalidate>
+          <div class="contst">
+            <div class="cs-heading">
+              <h2>Password</h2>
+            </div>
+            
+            <div class="cs-divider pt10">
+              <mat-divider></mat-divider>
+            </div>
+            <div class="form-field">
+              <div class="row">
+                
+                <div class="col-12">
+                  <div class="row">
+                    
+                    <div class="control-field col-4">
+                      <mat-form-field class="example-full-width cs-input">
+                        <input matInput placeholder="Old Password" name="password" [(ngModel)] = "form.password" #password = "ngModel" readonly>
+                      </mat-form-field>
+                      <!-- <mat-error *ngIf="f.submitted && !extension.valid" >extension is required</mat-error>  -->
+                    </div>
+                    
+                    <div class="control-field col-4 mat-color">
+                      <mat-form-field class="example-full-width cs-input">
+                        <input matInput type="{{new_password_type}}" placeholder="New Password" name="new_password" [(ngModel)] = "form.new_password" (input)="check_password(form.new_password,form.password,form.confirm_password)" #new_password = "ngModel" autocomplete="off">
+                      </mat-form-field>
+                      <!-- <mat-error *ngIf="f.submitted && !extension.valid" >extension is required</mat-error>  -->
+                      <mat-error>{{msg}}</mat-error>
+                    </div>
+                    
+                    
+                    
+                    <div class="control-field col-4 mat-color">
+                      <mat-form-field class="example-full-width cs-input">
+                        <input matInput type="password" placeholder="Confirm Password" name="confirm_password" [(ngModel)] = "form.confirm_password" (input)="confirms_password(form.new_password,form.confirm_password)" #confirm_password = "ngModel" autocomplete="off">
+                      </mat-form-field>
+                      <!-- <mat-error *ngIf="f.submitted && !extension.valid" >extension is required</mat-error>  -->
+                      <mat-error>{{msg1}}</mat-error>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            
+            <!-- <div class="cs-heading pt20">
+              <h2>Document Rights</h2>
+            </div> -->
+            
+            <div class="cs-divider pt10 pb10">
+              <mat-divider></mat-divider>
+            </div>
+            
+          </div>
+          
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <div class="h100"></div>

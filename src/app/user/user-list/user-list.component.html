@@ -1,0 +1,151 @@
+<div class="loader" *ngIf="loader">
+  <div class="outer">
+    <div class="innear">
+      <div class="logo-loading">
+        <span class="circle-one"></span>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="main-container">
+  <div class="master-heading">
+    <div class="vl-info">
+      <ul>
+        <li><p class="light">Records : <span class="black-clr">{{user?.length}}</span></p></li>
+        <li class="af-none" (click)="sort = !sort;sort_by_name()"><p class="pl30"><i class="material-icons icon">swap_vert</i><span>Sort</span></p></li>
+      </ul>
+    </div>
+    <div class=" wp30 ml30">
+      <mat-form-field class="example-full-width wp100 th-inputs search-input basic-serach">
+        <div class="th-serach">
+          <input matInput placeholder="Serach" [(ngModel)]="search.master"  (keyup.enter)="refresh()">
+          <span><i class="material-icons">search</i></span>
+        </div>
+      </mat-form-field>
+    </div>
+    <div class="top-pagination">
+      <ul *ngIf="pagenumber || search.length > 0">
+        <li class="refresh-area">
+          <a class="refresh-btn" mat-raised-button  matTooltip="Refresh" (click)="GetUserList(pagelimit,start,'refresh')"><i class="material-icons"> refresh</i></a>
+        </li>
+        <li class="refresh-area">
+          <a mat-raised-button class="color-2" matTooltip="Refresh" (click)="GetUserList(0,0,'')">Show all</a>
+        </li>
+        <li><p>Pages {{pagenumber}} Of {{total_page}}</p></li>
+        <li><button mat-button class="left-btn" (click) = "GetUserList(pagelimit,start-pagelimit,'')" disabled='{{pagenumber == 1}}'><i class="material-icons">keyboard_arrow_left</i></button></li>
+        <li><input type="text" placeholder="GO TO" [(ngModel)]="pagenumber"  (keyup.enter)="GetUserList(pagelimit,((pagenumber*pagelimit)-pagelimit),'')"  min="1" max="{{total_page}}"></li>
+        <li><button mat-button class="right-btn" (click)="GetUserList(pagelimit,start+pagelimit,'')" disabled="{{pagenumber == total_page}}"><i class="material-icons">keyboard_arrow_right</i></button></li>
+      </ul>
+    </div>
+  </div>
+  <div class="all-container">
+    <div class="cs-row">
+      <div class="right-data pl0">
+        <div class="cs-table">
+          <div class="progress" *ngIf="progress">
+            <div class="indeterminate"></div>
+          </div>
+          <div class="header sticky-header">
+            <table class="sno-border">
+              <tr>
+                <th class="w50 text-center">S.no</th>
+                <th class="w200 text-center">Name</th>
+                <th class="w250 text-center">Approver</th>
+                <th>Department</th>
+                <th class="w250 text-center">Username</th>
+                <th class="w250 text-center">Password</th>
+                <th class="w150 text-center">Role</th>
+              </tr>
+            </table>
+          </div>
+          <div class="header">
+            <table class="sno-border">
+              <tr>
+                <th class="w50"></th>
+                <th class="w200 pb0">
+                  <mat-form-field class="example-full-width wp100 th-inputs  search-input">
+                    <div class="th-serach"> 
+                      <input matInput placeholder="Search Name" name="name" [(ngModel)]="search.name"  (keyup.enter)="GetUserList(pagelimit,start,'')">
+                      <span><i class="material-icons">search</i></span>
+                    </div>
+                  </mat-form-field>
+                </th>
+                
+                <th class="w250 pb0">
+                  <mat-form-field class="example-full-width wp100 th-inputs search-input">
+                    <div class="th-serach">
+                      <input matInput placeholder="Search Approver" name="approver" [(ngModel)]="search.approver"  (keyup.enter)="GetUserList(pagelimit,start,'')">
+                      <span><i class="material-icons">search</i></span>
+                    </div>
+                  </mat-form-field>
+                </th>
+                <th class="pb0">
+                  <mat-form-field class="example-full-width wp100 th-inputs search-input">
+                    <div class="th-serach">
+                      <input matInput placeholder="Search Department" name="department" [(ngModel)]="search.department"  (keyup.enter)="GetUserList(pagelimit,start,'')">
+                      <span><i class="material-icons">search</i></span>
+                    </div>
+                  </mat-form-field>
+                </th>                               
+                
+                <th class="w250 pb0">
+                  <mat-form-field class="example-full-width wp100 th-inputs search-input">
+                    <div class="th-serach">
+                      <input matInput placeholder="search Username" name="username" [(ngModel)]="search.username"  (keyup.enter)="GetUserList(pagelimit,start,'')">
+                      <span><i class="material-icons">search</i></span>
+                    </div>
+                  </mat-form-field>
+                </th>
+                <th class="w250 pb0" >&nbsp;</th>
+                <th class="w150 pb0">
+                  <mat-form-field class="example-full-width wp100 th-inputs search-input cs-multi-select">
+                    <mat-select placeholder="Role" name="role" [(ngModel)]="search.role" (selectionChange)="GetUserList(pagelimit,start,'')">
+                      <mat-option value="">Select Role</mat-option>                            
+                      <mat-option *ngFor="let row of role_list" value="{{row.id}}">{{row.name | titlecase}}</mat-option>
+                    </mat-select>
+                  </mat-form-field> 
+                </th>
+              </tr>
+            </table>
+          </div>
+          <div class="table-container" *ngIf="user.length > 0">
+            <div class="table-body">
+              <table class="sno-border">
+                <tr *ngFor="let row of user; let i = index;">
+                  <td class="w50 text-center" *ngIf="pagenumber">{{((pagenumber-1)*pagelimit)+(i+1)}}</td>
+                  <td class="w50 text-center" *ngIf="!pagenumber">{{(i+1)}}</td>
+                  <td class="w200 text-center"><a class="link" mat-button routerLink="/edituser/{{row.id}}/{{start}}" routerLinkActive="active">{{row.name}}</a></td>
+                  <td class="w250  text-center">{{row.approver_name ? row.approver_name : 'N.A'}}</td>
+                  <td>{{row.department}}</td>
+                  <td class="w250  text-center">{{row.username}}</td>
+                  
+                  <td class="w250  text-center">                    
+                    <div class="td-input" [ngClass]="{'active':row.active == true}">
+                      <input type="{{row.active? 'password' : 'text'}}" placeholder="" [(ngModel)]="row.password" readonly>
+                      <i *ngIf="row.active" class="material-icons password show-pass" (click)="toggleterritory(row.active,'close',i)" >visibility</i>
+                      <i *ngIf="!row.active" class="material-icons password show-hide" (click)="toggleterritory(row.active,'open',i)">visibility_off</i>
+                    </div>
+                  </td>
+                  <td class="w150 text-center">{{row.rolename}}
+                    <div class="action-btns">
+                      <div class="outer">
+                        <div class="innear">
+                          <a mat-button class="edit" routerLink="/edituser/{{row.id}}/{{start}}" routerLinkActive="active" (click)="edit_user(i)"><i class="material-icons">edit</i> Edit</a>
+                          <button mat-button class="delete" (click)="delete_user(i,row.id)"><i class="material-icons">delete_sweep</i> Delete</button>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <div style="text-align: center;"  *ngIf="user.length == 0">
+            <img src="assets/img/NoRecordFound.png" alt="">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="h100"></div>
+  
